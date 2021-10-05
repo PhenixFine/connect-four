@@ -13,15 +13,21 @@ class ConnectFour private constructor(
         var isPlayer1 = true
         val turnMessage = { (if (isPlayer1) player1 else player2) + "'s turn:" }
         val getDisc = { if (isPlayer1) 'o' else '*' }
+        var drawOrWin = "It is a draw"
         var command = ""
         val getCommand = { command = getString(turnMessage()); command }
 
-        while (getCommand() != "end") {
+        while (!gameBoard.gameOver() && getCommand() != "end") {
             if (gameBoard.insertDisc(getDisc(), command)) {
                 gameBoard.print(false)
-                isPlayer1 = !isPlayer1
+                if (gameBoard.gameWon) {
+                    drawOrWin = "Player " + (if (isPlayer1) player1 else player2) + " won"
+                } else {
+                    isPlayer1 = !isPlayer1
+                }
             }
         }
+        if (gameBoard.gameOver()) println(drawOrWin)
         println("Game over!")
     }
 
