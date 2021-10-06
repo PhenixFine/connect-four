@@ -1,31 +1,27 @@
 # Connect Four
-Stage 3 of 5 for JetBrains Academy - Kotlin - [Connect Four project](https://hyperskill.org/projects/202/stages/1004/implement).   
-This stage has us ask each user for their turn and once their move is verified inserting their disc into the game board.
+Stage 4 of 5 for JetBrains Academy - Kotlin - [Connect Four project](https://hyperskill.org/projects/202/stages/1005/implement).   
+This stage has us implement win and draw cases.
 ## Requirements
 ### Description
-Players use red and yellow colored discs in the "hardware" version of the game. In this project, we are going to substitute them with `o` and `*` characters. The `o` is for the first player.
-
-Each player inputs a column number one after another. The program must read the input and print the appropriate character ( `o` or `*`) on the first available position at the bottom of that column. If the user input isn't correct, print the appropriate message and ask for a new one (see Examples). The program should also check whether a column is full or not. If it is, no more discs can be added to it.
-
-If players input `end` instead of a column number, terminate the program and print the respective message.
+Now, it is time to implement the winning condition. A player wins when they place four discs of the same color in a row horizontally, vertically, or diagonally. After each move, the program checks if the condition is met. Also, if the board is full and the win condition isn't fulfilled, claim it a draw.
 ### Objectives
-In addition to the functionality from the previous stage, your game should perform the following:
-1. Ask each player to input a column number by prompting `<First player's name>'s turn:` or `<Second player's name>'s turn:`. Read the column number and print `o` or `*` on the first available position of that column. The first player is `o`; the second player is `*`. If either player inputs `end`, terminate the program and print `Game over!` (see Example 1).
-2. If the input contains an integer number outside the scope of available columns, warn the players with the `The column number is out of range (1 - <Max column number>)` message and ask for it once again. If players' input doesn't contain an integer, warn the players with `Incorrect column number` and ask for it once again (see Example 2).
-3. If the column is full, print the following message `Column <Column number> is full` and ask to input another column number (see Example 2).
+In addition to what we have added before, your program should do the following:
+1. Check the board for the winning condition. If a player wins, output `Player <Player's name> won`;
+2. If the board is full, but neither of the players has won, print `It is a draw`;
+3. Regardless of whether it is a draw or somebody's victory, print `Game Over!` and terminate the program.
 ### Examples
 The greater-than symbol followed by a space (`> `) represents the user input. Note that it's not part of the input.
-#### Example 1: normal execution
+#### Example 1: the first player wins by placing four discs in a horizontal row
 ```text
 Connect Four
 First player's name:
-> Mia
+> Paul
 Second player's name:
-> Bill
+> Joanne
 Set the board dimensions (Rows x Columns)
 Press Enter for default (6 x 7)
 > 6x8
-Mia VS Bill
+Paul VS Joanne
 6 X 8 board
  1 2 3 4 5 6 7 8
 ║ ║ ║ ║ ║ ║ ║ ║ ║
@@ -35,278 +31,655 @@ Mia VS Bill
 ║ ║ ║ ║ ║ ║ ║ ║ ║
 ║ ║ ║ ║ ║ ║ ║ ║ ║
 ╚═╩═╩═╩═╩═╩═╩═╩═╝
-Mia's turn:
-> 4
+Paul's turn:
+> 2
  1 2 3 4 5 6 7 8
 ║ ║ ║ ║ ║ ║ ║ ║ ║
 ║ ║ ║ ║ ║ ║ ║ ║ ║
 ║ ║ ║ ║ ║ ║ ║ ║ ║
 ║ ║ ║ ║ ║ ║ ║ ║ ║
 ║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ο║ ║ ║ ║ ║
+║ ║ο║ ║ ║ ║ ║ ║ ║
 ╚═╩═╩═╩═╩═╩═╩═╩═╝
-Bill's turn:
+Joanne's turn:
+> 2
+ 1 2 3 4 5 6 7 8
+║ ║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║ ║
+║ ║*║ ║ ║ ║ ║ ║ ║
+║ ║ο║ ║ ║ ║ ║ ║ ║
+╚═╩═╩═╩═╩═╩═╩═╩═╝
+Paul's turn:
+> 3
+ 1 2 3 4 5 6 7 8
+║ ║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║ ║
+║ ║*║ ║ ║ ║ ║ ║ ║
+║ ║ο║ο║ ║ ║ ║ ║ ║
+╚═╩═╩═╩═╩═╩═╩═╩═╝
+Joanne's turn:
+> 3
+ 1 2 3 4 5 6 7 8
+║ ║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║ ║
+║ ║*║*║ ║ ║ ║ ║ ║
+║ ║ο║ο║ ║ ║ ║ ║ ║
+╚═╩═╩═╩═╩═╩═╩═╩═╝
+Paul's turn:
 > 4
  1 2 3 4 5 6 7 8
 ║ ║ ║ ║ ║ ║ ║ ║ ║
 ║ ║ ║ ║ ║ ║ ║ ║ ║
 ║ ║ ║ ║ ║ ║ ║ ║ ║
 ║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║*║ ║ ║ ║ ║
-║ ║ ║ ║ο║ ║ ║ ║ ║
+║ ║*║*║ ║ ║ ║ ║ ║
+║ ║ο║ο║ο║ ║ ║ ║ ║
 ╚═╩═╩═╩═╩═╩═╩═╩═╝
-Mia's turn:
+Joanne's turn:
+> 4
+ 1 2 3 4 5 6 7 8
+║ ║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║ ║
+║ ║*║*║*║ ║ ║ ║ ║
+║ ║ο║ο║ο║ ║ ║ ║ ║
+╚═╩═╩═╩═╩═╩═╩═╩═╝
+Paul's turn:
 > 5
  1 2 3 4 5 6 7 8
 ║ ║ ║ ║ ║ ║ ║ ║ ║
 ║ ║ ║ ║ ║ ║ ║ ║ ║
 ║ ║ ║ ║ ║ ║ ║ ║ ║
 ║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║*║ ║ ║ ║ ║
-║ ║ ║ ║ο║ο║ ║ ║ ║
+║ ║*║*║*║ ║ ║ ║ ║
+║ ║ο║ο║ο║ο║ ║ ║ ║
 ╚═╩═╩═╩═╩═╩═╩═╩═╝
-Bill's turn:
-> 4
- 1 2 3 4 5 6 7 8
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║*║ ║ ║ ║ ║
-║ ║ ║ ║*║ ║ ║ ║ ║
-║ ║ ║ ║ο║ο║ ║ ║ ║
-╚═╩═╩═╩═╩═╩═╩═╩═╝
-Mia's turn:
-> 7
- 1 2 3 4 5 6 7 8
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║*║ ║ ║ ║ ║
-║ ║ ║ ║*║ ║ ║ ║ ║
-║ ║ ║ ║ο║ο║ ║ο║ ║
-╚═╩═╩═╩═╩═╩═╩═╩═╝
-Bill's turn:
-> 8
- 1 2 3 4 5 6 7 8
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║*║ ║ ║ ║ ║
-║ ║ ║ ║*║ ║ ║ ║ ║
-║ ║ ║ ║ο║ο║ ║ο║*║
-╚═╩═╩═╩═╩═╩═╩═╩═╝
-Mia's turn:
-> 8
- 1 2 3 4 5 6 7 8
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║*║ ║ ║ ║ ║
-║ ║ ║ ║*║ ║ ║ ║ο║
-║ ║ ║ ║ο║ο║ ║ο║*║
-╚═╩═╩═╩═╩═╩═╩═╩═╝
-Bill's turn:
-> 1
- 1 2 3 4 5 6 7 8
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║*║ ║ ║ ║ ║
-║ ║ ║ ║*║ ║ ║ ║ο║
-║*║ ║ ║ο║ο║ ║ο║*║
-╚═╩═╩═╩═╩═╩═╩═╩═╝
-Mia's turn:
-> end
+Player Paul won
 Game over!
 ```
-#### Example 2: warning messages
+#### Example 2: the second player wins by placing four discs in a vertical row
 ```text
 Connect Four
 First player's name:
-> Mia
+> Paul
 Second player's name:
-> Bill
-Set the board dimensions (Rows x Columns)
-Press Enter for default (6 x 7)
-> 7 x 8
-Mia VS Bill
-7 X 8 board
- 1 2 3 4 5 6 7 8
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-╚═╩═╩═╩═╩═╩═╩═╩═╝
-Mia's turn:
-> 0
-The column number is out of range (1 - 8)
-Mia's turn:
-> 9
-The column number is out of range (1 - 8)
-Mia's turn:
-> a12
-Incorrect column number
-Mia's turn:
-> 1
- 1 2 3 4 5 6 7 8
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ο║ ║ ║ ║ ║ ║ ║ ║
-╚═╩═╩═╩═╩═╩═╩═╩═╝
-Bill's turn:
-> 1
- 1 2 3 4 5 6 7 8
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║*║ ║ ║ ║ ║ ║ ║ ║
-║ο║ ║ ║ ║ ║ ║ ║ ║
-╚═╩═╩═╩═╩═╩═╩═╩═╝
-Mia's turn:
-> 1
- 1 2 3 4 5 6 7 8
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ο║ ║ ║ ║ ║ ║ ║ ║
-║*║ ║ ║ ║ ║ ║ ║ ║
-║ο║ ║ ║ ║ ║ ║ ║ ║
-╚═╩═╩═╩═╩═╩═╩═╩═╝
-Bill's turn:
-> 1
- 1 2 3 4 5 6 7 8
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║*║ ║ ║ ║ ║ ║ ║ ║
-║ο║ ║ ║ ║ ║ ║ ║ ║
-║*║ ║ ║ ║ ║ ║ ║ ║
-║ο║ ║ ║ ║ ║ ║ ║ ║
-╚═╩═╩═╩═╩═╩═╩═╩═╝
-Mia's turn:
-> 1
- 1 2 3 4 5 6 7 8
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║ο║ ║ ║ ║ ║ ║ ║ ║
-║*║ ║ ║ ║ ║ ║ ║ ║
-║ο║ ║ ║ ║ ║ ║ ║ ║
-║*║ ║ ║ ║ ║ ║ ║ ║
-║ο║ ║ ║ ║ ║ ║ ║ ║
-╚═╩═╩═╩═╩═╩═╩═╩═╝
-Bill's turn:
-> 1
- 1 2 3 4 5 6 7 8
-║ ║ ║ ║ ║ ║ ║ ║ ║
-║*║ ║ ║ ║ ║ ║ ║ ║
-║ο║ ║ ║ ║ ║ ║ ║ ║
-║*║ ║ ║ ║ ║ ║ ║ ║
-║ο║ ║ ║ ║ ║ ║ ║ ║
-║*║ ║ ║ ║ ║ ║ ║ ║
-║ο║ ║ ║ ║ ║ ║ ║ ║
-╚═╩═╩═╩═╩═╩═╩═╩═╝
-Mia's turn:
-> 1
- 1 2 3 4 5 6 7 8
-║ο║ ║ ║ ║ ║ ║ ║ ║
-║*║ ║ ║ ║ ║ ║ ║ ║
-║ο║ ║ ║ ║ ║ ║ ║ ║
-║*║ ║ ║ ║ ║ ║ ║ ║
-║ο║ ║ ║ ║ ║ ║ ║ ║
-║*║ ║ ║ ║ ║ ║ ║ ║
-║ο║ ║ ║ ║ ║ ║ ║ ║
-╚═╩═╩═╩═╩═╩═╩═╩═╝
-Bill's turn:
-> 1
-Column 1 is full
-Bill's turn:
-> end
-Game over!
-```
-#### Example 3: plain text example
-```text
-Connect Four
-First player's name:
-> Mia
-Second player's name:
-> Bill
+> Joanne
 Set the board dimensions (Rows x Columns)
 Press Enter for default (6 x 7)
 > 5x7
-Mia VS Bill
+Paul VS Joanne
 5 X 7 board
  1 2 3 4 5 6 7
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-===============
-Mia's turn:
-> 2
- 1 2 3 4 5 6 7
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| |o| | | | | |
-===============
-Bill's turn:
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+╚═╩═╩═╩═╩═╩═╩═╝
+Paul's turn:
 > 3
  1 2 3 4 5 6 7
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| |o|*| | | | |
-===============
-Mia's turn:
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ο║ ║ ║ ║ ║
+╚═╩═╩═╩═╩═╩═╩═╝
+Joanne's turn:
+> 4
+ 1 2 3 4 5 6 7
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ο║*║ ║ ║ ║
+╚═╩═╩═╩═╩═╩═╩═╝
+Paul's turn:
+> 3
+ 1 2 3 4 5 6 7
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ο║ ║ ║ ║ ║
+║ ║ ║ο║*║ ║ ║ ║
+╚═╩═╩═╩═╩═╩═╩═╝
+Joanne's turn:
+> 4
+ 1 2 3 4 5 6 7
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ο║*║ ║ ║ ║
+║ ║ ║ο║*║ ║ ║ ║
+╚═╩═╩═╩═╩═╩═╩═╝
+Paul's turn:
+> 3
+ 1 2 3 4 5 6 7
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ο║ ║ ║ ║ ║
+║ ║ ║ο║*║ ║ ║ ║
+║ ║ ║ο║*║ ║ ║ ║
+╚═╩═╩═╩═╩═╩═╩═╝
+Joanne's turn:
+> 4
+ 1 2 3 4 5 6 7
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ο║*║ ║ ║ ║
+║ ║ ║ο║*║ ║ ║ ║
+║ ║ ║ο║*║ ║ ║ ║
+╚═╩═╩═╩═╩═╩═╩═╝
+Paul's turn:
 > 2
  1 2 3 4 5 6 7
-| | | | | | | |
-| | | | | | | |
-| | | | | | | |
-| |o| | | | | |
-| |o|*| | | | |
-===============
-Bill's turn:
-> 2
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ο║*║ ║ ║ ║
+║ ║ ║ο║*║ ║ ║ ║
+║ ║ο║ο║*║ ║ ║ ║
+╚═╩═╩═╩═╩═╩═╩═╝
+Joanne's turn:
+> 4
  1 2 3 4 5 6 7
-| | | | | | | |
-| | | | | | | |
-| |*| | | | | |
-| |o| | | | | |
-| |o|*| | | | |
-===============
-Mia's turn:
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║*║ ║ ║ ║
+║ ║ ║ο║*║ ║ ║ ║
+║ ║ ║ο║*║ ║ ║ ║
+║ ║ο║ο║*║ ║ ║ ║
+╚═╩═╩═╩═╩═╩═╩═╝
+Player Joanne won
+Game over!
+```
+#### Example 3: the first player wins by placing four discs in a diagonal row
+```text
+Connect Four
+First player's name:
+> Paul
+Second player's name:
+> Joanne
+Set the board dimensions (Rows x Columns)
+Press Enter for default (6 x 7)
+> 7x7
+Paul VS Joanne
+7 X 7 board
+ 1 2 3 4 5 6 7
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+╚═╩═╩═╩═╩═╩═╩═╝
+Paul's turn:
+> 3
+ 1 2 3 4 5 6 7
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ο║ ║ ║ ║ ║
+╚═╩═╩═╩═╩═╩═╩═╝
+Joanne's turn:
+> 4
+ 1 2 3 4 5 6 7
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ο║*║ ║ ║ ║
+╚═╩═╩═╩═╩═╩═╩═╝
+Paul's turn:
+> 4
+ 1 2 3 4 5 6 7
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ο║ ║ ║ ║
+║ ║ ║ο║*║ ║ ║ ║
+╚═╩═╩═╩═╩═╩═╩═╝
+Joanne's turn:
+> 5
+ 1 2 3 4 5 6 7
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ο║ ║ ║ ║
+║ ║ ║ο║*║*║ ║ ║
+╚═╩═╩═╩═╩═╩═╩═╝
+Paul's turn:
+> 5
+ 1 2 3 4 5 6 7
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ο║ο║ ║ ║
+║ ║ ║ο║*║*║ ║ ║
+╚═╩═╩═╩═╩═╩═╩═╝
+Joanne's turn:
+> 6
+ 1 2 3 4 5 6 7
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ο║ο║ ║ ║
+║ ║ ║ο║*║*║*║ ║
+╚═╩═╩═╩═╩═╩═╩═╝
+Paul's turn:
+> 5
+ 1 2 3 4 5 6 7
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ο║ ║ ║
+║ ║ ║ ║ο║ο║ ║ ║
+║ ║ ║ο║*║*║*║ ║
+╚═╩═╩═╩═╩═╩═╩═╝
+Joanne's turn:
+> 3
+ 1 2 3 4 5 6 7
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ο║ ║ ║
+║ ║ ║*║ο║ο║ ║ ║
+║ ║ ║ο║*║*║*║ ║
+╚═╩═╩═╩═╩═╩═╩═╝
+Paul's turn:
+> 6
+ 1 2 3 4 5 6 7
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ο║ ║ ║
+║ ║ ║*║ο║ο║ο║ ║
+║ ║ ║ο║*║*║*║ ║
+╚═╩═╩═╩═╩═╩═╩═╝
+Joanne's turn:
+> 6
+ 1 2 3 4 5 6 7
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ο║*║ ║
+║ ║ ║*║ο║ο║ο║ ║
+║ ║ ║ο║*║*║*║ ║
+╚═╩═╩═╩═╩═╩═╩═╝
+Paul's turn:
+> 6
+ 1 2 3 4 5 6 7
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║ο║ ║
+║ ║ ║ ║ ║ο║*║ ║
+║ ║ ║*║ο║ο║ο║ ║
+║ ║ ║ο║*║*║*║ ║
+╚═╩═╩═╩═╩═╩═╩═╝
+Player Paul won
+Game over!
+```
+#### Example 4: a draw
+```text
+Connect Four
+First player's name:
+> Paul
+Second player's name:
+> Joanne
+Set the board dimensions (Rows x Columns)
+Press Enter for default (6 x 7)
+> 5 X 5
+Paul VS Joanne
+5 X 5 board
+ 1 2 3 4 5
+║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║
+╚═╩═╩═╩═╩═╝
+Paul's turn:
 > 1
+ 1 2 3 4 5
+║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║
+║ο║ ║ ║ ║ ║
+╚═╩═╩═╩═╩═╝
+Joanne's turn:
+> 1
+ 1 2 3 4 5
+║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║
+║*║ ║ ║ ║ ║
+║ο║ ║ ║ ║ ║
+╚═╩═╩═╩═╩═╝
+Paul's turn:
+> 1
+ 1 2 3 4 5
+║ ║ ║ ║ ║ ║
+║ ║ ║ ║ ║ ║
+║ο║ ║ ║ ║ ║
+║*║ ║ ║ ║ ║
+║ο║ ║ ║ ║ ║
+╚═╩═╩═╩═╩═╝
+Joanne's turn:
+> 1
+ 1 2 3 4 5
+║ ║ ║ ║ ║ ║
+║*║ ║ ║ ║ ║
+║ο║ ║ ║ ║ ║
+║*║ ║ ║ ║ ║
+║ο║ ║ ║ ║ ║
+╚═╩═╩═╩═╩═╝
+Paul's turn:
+> 1
+ 1 2 3 4 5
+║ο║ ║ ║ ║ ║
+║*║ ║ ║ ║ ║
+║ο║ ║ ║ ║ ║
+║*║ ║ ║ ║ ║
+║ο║ ║ ║ ║ ║
+╚═╩═╩═╩═╩═╝
+Joanne's turn:
+> 2
+ 1 2 3 4 5
+║ο║ ║ ║ ║ ║
+║*║ ║ ║ ║ ║
+║ο║ ║ ║ ║ ║
+║*║ ║ ║ ║ ║
+║ο║*║ ║ ║ ║
+╚═╩═╩═╩═╩═╝
+Paul's turn:
+> 2
+ 1 2 3 4 5
+║ο║ ║ ║ ║ ║
+║*║ ║ ║ ║ ║
+║ο║ ║ ║ ║ ║
+║*║ο║ ║ ║ ║
+║ο║*║ ║ ║ ║
+╚═╩═╩═╩═╩═╝
+Joanne's turn:
+> 3
+ 1 2 3 4 5
+║ο║ ║ ║ ║ ║
+║*║ ║ ║ ║ ║
+║ο║ ║ ║ ║ ║
+║*║ο║ ║ ║ ║
+║ο║*║*║ ║ ║
+╚═╩═╩═╩═╩═╝
+Paul's turn:
+> 4
+ 1 2 3 4 5
+║ο║ ║ ║ ║ ║
+║*║ ║ ║ ║ ║
+║ο║ ║ ║ ║ ║
+║*║ο║ ║ ║ ║
+║ο║*║*║ο║ ║
+╚═╩═╩═╩═╩═╝
+Joanne's turn:
+> 2
+ 1 2 3 4 5
+║ο║ ║ ║ ║ ║
+║*║ ║ ║ ║ ║
+║ο║*║ ║ ║ ║
+║*║ο║ ║ ║ ║
+║ο║*║*║ο║ ║
+╚═╩═╩═╩═╩═╝
+Paul's turn:
+> 2
+ 1 2 3 4 5
+║ο║ ║ ║ ║ ║
+║*║ο║ ║ ║ ║
+║ο║*║ ║ ║ ║
+║*║ο║ ║ ║ ║
+║ο║*║*║ο║ ║
+╚═╩═╩═╩═╩═╝
+Joanne's turn:
+> 2
+ 1 2 3 4 5
+║ο║*║ ║ ║ ║
+║*║ο║ ║ ║ ║
+║ο║*║ ║ ║ ║
+║*║ο║ ║ ║ ║
+║ο║*║*║ο║ ║
+╚═╩═╩═╩═╩═╝
+Paul's turn:
+> 3
+ 1 2 3 4 5
+║ο║*║ ║ ║ ║
+║*║ο║ ║ ║ ║
+║ο║*║ ║ ║ ║
+║*║ο║ο║ ║ ║
+║ο║*║*║ο║ ║
+╚═╩═╩═╩═╩═╝
+Joanne's turn:
+> 3
+ 1 2 3 4 5
+║ο║*║ ║ ║ ║
+║*║ο║ ║ ║ ║
+║ο║*║*║ ║ ║
+║*║ο║ο║ ║ ║
+║ο║*║*║ο║ ║
+╚═╩═╩═╩═╩═╝
+Paul's turn:
+> 3
+ 1 2 3 4 5
+║ο║*║ ║ ║ ║
+║*║ο║ο║ ║ ║
+║ο║*║*║ ║ ║
+║*║ο║ο║ ║ ║
+║ο║*║*║ο║ ║
+╚═╩═╩═╩═╩═╝
+Joanne's turn:
+> 3
+ 1 2 3 4 5
+║ο║*║*║ ║ ║
+║*║ο║ο║ ║ ║
+║ο║*║*║ ║ ║
+║*║ο║ο║ ║ ║
+║ο║*║*║ο║ ║
+╚═╩═╩═╩═╩═╝
+Paul's turn:
+> 5
+ 1 2 3 4 5
+║ο║*║*║ ║ ║
+║*║ο║ο║ ║ ║
+║ο║*║*║ ║ ║
+║*║ο║ο║ ║ ║
+║ο║*║*║ο║ο║
+╚═╩═╩═╩═╩═╝
+Joanne's turn:
+> 4
+ 1 2 3 4 5
+║ο║*║*║ ║ ║
+║*║ο║ο║ ║ ║
+║ο║*║*║ ║ ║
+║*║ο║ο║*║ ║
+║ο║*║*║ο║ο║
+╚═╩═╩═╩═╩═╝
+Paul's turn:
+> 4
+ 1 2 3 4 5
+║ο║*║*║ ║ ║
+║*║ο║ο║ ║ ║
+║ο║*║*║ο║ ║
+║*║ο║ο║*║ ║
+║ο║*║*║ο║ο║
+╚═╩═╩═╩═╩═╝
+Joanne's turn:
+> 4
+ 1 2 3 4 5
+║ο║*║*║ ║ ║
+║*║ο║ο║*║ ║
+║ο║*║*║ο║ ║
+║*║ο║ο║*║ ║
+║ο║*║*║ο║ο║
+╚═╩═╩═╩═╩═╝
+Paul's turn:
+> 4
+ 1 2 3 4 5
+║ο║*║*║ο║ ║
+║*║ο║ο║*║ ║
+║ο║*║*║ο║ ║
+║*║ο║ο║*║ ║
+║ο║*║*║ο║ο║
+╚═╩═╩═╩═╩═╝
+Joanne's turn:
+> 5
+ 1 2 3 4 5
+║ο║*║*║ο║ ║
+║*║ο║ο║*║ ║
+║ο║*║*║ο║ ║
+║*║ο║ο║*║*║
+║ο║*║*║ο║ο║
+╚═╩═╩═╩═╩═╝
+Paul's turn:
+> 5
+ 1 2 3 4 5
+║ο║*║*║ο║ ║
+║*║ο║ο║*║ ║
+║ο║*║*║ο║ο║
+║*║ο║ο║*║*║
+║ο║*║*║ο║ο║
+╚═╩═╩═╩═╩═╝
+Joanne's turn:
+> 5
+ 1 2 3 4 5
+║ο║*║*║ο║ ║
+║*║ο║ο║*║*║
+║ο║*║*║ο║ο║
+║*║ο║ο║*║*║
+║ο║*║*║ο║ο║
+╚═╩═╩═╩═╩═╝
+Paul's turn:
+> 5
+ 1 2 3 4 5
+║ο║*║*║ο║ο║
+║*║ο║ο║*║*║
+║ο║*║*║ο║ο║
+║*║ο║ο║*║*║
+║ο║*║*║ο║ο║
+╚═╩═╩═╩═╩═╝
+It is a draw
+Game over!
+```
+#### Example 5: plain text board
+```text
+Connect Four
+First player's name:
+> Paul
+Second player's name:
+> Joanne
+Set the board dimensions (Rows x Columns)
+Press Enter for default (6 x 7)
+> 6x7
+Paul VS Joanne
+6 X 7 board
  1 2 3 4 5 6 7
 | | | | | | | |
 | | | | | | | |
-| |*| | | | | |
-| |o| | | | | |
-|o|o|*| | | | |
+| | | | | | | |
+| | | | | | | |
+| | | | | | | |
+| | | | | | | |
 ===============
-Bill's turn:
+Paul's turn:
+> 7
+ 1 2 3 4 5 6 7
+| | | | | | | |
+| | | | | | | |
+| | | | | | | |
+| | | | | | | |
+| | | | | | | |
+| | | | | | |o|
+===============
+Joanne's turn:
+> 6
+ 1 2 3 4 5 6 7
+| | | | | | | |
+| | | | | | | |
+| | | | | | | |
+| | | | | | | |
+| | | | | | | |
+| | | | | |*|o|
+===============
+Paul's turn:
+> 7
+ 1 2 3 4 5 6 7
+| | | | | | | |
+| | | | | | | |
+| | | | | | | |
+| | | | | | | |
+| | | | | | |o|
+| | | | | |*|o|
+===============
+Joanne's turn:
+> 5
+ 1 2 3 4 5 6 7
+| | | | | | | |
+| | | | | | | |
+| | | | | | | |
+| | | | | | | |
+| | | | | | |o|
+| | | | |*|*|o|
+===============
+Paul's turn:
+> 7
+ 1 2 3 4 5 6 7
+| | | | | | | |
+| | | | | | | |
+| | | | | | | |
+| | | | | | |o|
+| | | | | | |o|
+| | | | |*|*|o|
+===============
+Joanne's turn:
 > 4
  1 2 3 4 5 6 7
 | | | | | | | |
 | | | | | | | |
-| |*| | | | | |
-| |o| | | | | |
-|o|o|*|*| | | |
+| | | | | | | |
+| | | | | | |o|
+| | | | | | |o|
+| | | |*|*|*|o|
 ===============
-Mia's turn:
-> end
+Paul's turn:
+> 7
+ 1 2 3 4 5 6 7
+| | | | | | | |
+| | | | | | | |
+| | | | | | |o|
+| | | | | | |o|
+| | | | | | |o|
+| | | |*|*|*|o|
+===============
+Player Paul won
 Game over!
 ```
