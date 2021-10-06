@@ -1,9 +1,13 @@
 import util.getString
+import Direction.*
 
 class GameBoard private constructor(private val rows: Int = 6, private val columns: Int = 7) {
     private val board = Array(rows) { Array(columns) { ' ' } }
     private val columnRange = 1..columns
+    private val rowRange = 1..rows
     private val boardMap = columnRange.associateWith { rows }.toMutableMap()
+    var gameWon = false
+        private set
 
     fun print(printColumnRows: Boolean = true) {
         val (pipe, leftPipe, middlePipe, rightPipe) = listOf("║", "╚", "═╩", "═╝")
@@ -23,6 +27,7 @@ class GameBoard private constructor(private val rows: Int = 6, private val colum
             boardMap[column]?.let { row: Int ->
                 if (row != 0) {
                     updateBoard(disc, row, column)
+                    gameWon = checkWin(disc, row, column)
                     return true
                 } else error = "Column $column is full"
             }
@@ -35,6 +40,29 @@ class GameBoard private constructor(private val rows: Int = 6, private val colum
         board[row - 1][column - 1] = disc
         boardMap[column] = row - 1
     }
+
+    private fun checkWin(disc: Char, row: Int, column: Int): Boolean {
+        val isWin = { path1: Direction, path2: Direction ->
+            checkPath(disc, row, column, path1) + checkPath(disc, row, column, path2) >= 3
+        }
+
+        return isWin(LEFT, RIGHT) || isWin(UP, DOWN) || isWin(UP_LEFT, DOWN_RIGHT) || isWin(DOWN_LEFT, UP_RIGHT)
+    }
+
+    private fun checkPath(disc: Char, row: Int, column: Int, path: Direction): Int {
+        var discCount = 0
+        var shift = path.shift(row, column)
+        val isValid = { rowRange.contains(shift.first) && columnRange.contains(shift.second) }
+        val isDisc = { board[shift.first - 1][shift.second - 1] == disc }
+
+        while (isValid() && isDisc()) {
+            discCount++
+            shift = path.shift(shift.first, shift.second)
+        }
+        return discCount
+    }
+
+    fun gameOver() = gameWon || boardMap.all { it.value == 0 }
 
     companion object {
         fun getGameBoard(): GameBoard {
