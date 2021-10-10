@@ -1,5 +1,5 @@
 # Connect Four
-Stage 5 of 5 for JetBrains Academy - Kotlin - [Connect Four project](https://hyperskill.org/projects/202/stages/1005/implement).   
+Stage 5 of 5 for JetBrains Academy - Kotlin - [Connect Four project](https://hyperskill.org/projects/202/stages/1006/implement).   
 This stage has us add the option for more than one game ( and keeping score for multiple games ).
 ## Requirements
 ### Description
